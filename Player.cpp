@@ -2,6 +2,7 @@
 #define HW2_PLAYER_source
 
 #include "Player.h"
+#include "utilities.h"
 #include <string.h>
 
 #define BASE_HP 100
@@ -50,7 +51,7 @@ Player::Player(const char* name, int baseMaxHP, int baseForce)
 
 Player::Player(const Player& player)
 {
-    this->name = player.name;
+    this->name = copyString(player.name);
     this->level = player.level;
     this->force = player.force;
     this->maxHP = player.maxHP;
@@ -76,57 +77,77 @@ Player& Player::operator=(const Player& player)
     this->maxHP = player.maxHP;
     this->HP = player.HP;
     this->coins = player.coins;
+
+    return *this;
 }
 
 
 void Player::printInfo()
 {
-
+    printPlayerInfo(this->name,
+                    this->level,
+                    this->force,
+                    this->HP,
+                    this->coins);
 }
 
 void Player::levelUp()
 {
-
+    if(level < 10){
+        level++;
+    }
 }
 
 int Player::getLevel()
 {
-
+    return level;
 }
 
 void Player::buff(int amount)
 {
-
+    this->force += amount;
 }
 
 void Player::heal(int amount)
 {
-
+    this->HP += amount;
+    if(this->HP > this->maxHP){
+        this->HP = this->maxHP;
+    }
 }
 
 void Player::damage(int amount)
 {
-
+    this->HP -= amount;
+    if(this->HP < 0){
+        this->HP = 0;
+    }
 }
 
 bool Player::isKnockedOut()
 {
-
+ return !this->HP;
 }
 
 void Player::addCoins(int amount)
 {
-
+    this->coins += amount;
 }
 
 bool Player::pay(int amount)
 {
-
+    if(amount >= this->coins){
+        this->coins -= amount;
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 int Player::getAttackStrength()
 {
-
+    return this->force + this->level;
 }
 
 
