@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define BASE_HP 100
+#define BASE_ATTACK 5
+
 class Player{
     char* name;
     int level;
@@ -17,23 +20,21 @@ class Player{
     *  Constractor 1:
     *  only name given
     */
-    Player(const char* name);
-    Player(const char* name, int maxHP);
-    Player(const char* name, int baseMaxHP, int baseForce);
-    Player(const Player&);
+    Player(const char* name, int baseMaxHP = BASE_HP, int baseForce = BASE_ATTACK);
+    Player(const Player& player);
     ~Player();
+    Player& operator=(const Player& player);
 
-    Player& operator=(const Player& player);    
-    void printInfo();
+    void printInfo() const;
     void levelUp();
-    int getLevel();
-    void buff(int amount);
-    void heal(int amount);
-    void damage(int amount);
-    bool isKnockedOut();
-    void addCoins(int amount);
-    bool pay(int amount);
-    int getAttackStrength();
+    int getLevel() const;
+    void buff(int buffAmount);
+    void heal(int healAmount);
+    void damage(int damageAmount);
+    bool isKnockedOut() const;
+    void addCoins(int coinAmount);
+    bool pay(int coinAmount);
+    int getAttackStrength() const;
 };
 
 #endif // HW2_PLAYER
