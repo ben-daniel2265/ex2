@@ -19,26 +19,6 @@ char* copyString(const char* originalString)
     return string;
 }
 
-Player::Player(const char* name)
-{
-    this->name = copyString(name);
-    this->level = 1;
-    this->force = BASE_ATTACK;
-    this->maxHP = BASE_HP;
-    this->HP = BASE_HP;
-    this->coins = 0;
-}
-
-Player::Player(const char* name, int baseMaxHP)
-{
-    this->name = copyString(name);
-    this->level = 1;
-    this->force = BASE_ATTACK;
-    this->maxHP = baseMaxHP;
-    this->HP = baseMaxHP;
-    this->coins = 0;
-}
-
 Player::Player(const char* name, int baseMaxHP, int baseForce)
 {
     this->name = copyString(name);
@@ -82,7 +62,7 @@ Player& Player::operator=(const Player& player)
 }
 
 
-void Player::printInfo()
+void Player::printInfo() const
 {
     printPlayerInfo(this->name,
                     this->level,
@@ -98,46 +78,54 @@ void Player::levelUp()
     }
 }
 
-int Player::getLevel()
+int Player::getLevel() const
 {
     return level;
 }
 
-void Player::buff(int amount)
+void Player::buff(int buffAmount)
 {
-    this->force += amount;
-}
-
-void Player::heal(int amount)
-{
-    this->HP += amount;
-    if(this->HP > this->maxHP){
-        this->HP = this->maxHP;
+    if(buffAmount > 0){
+        this->force += buffAmount;
     }
 }
 
-void Player::damage(int amount)
+void Player::heal(int healAmount)
 {
-    this->HP -= amount;
-    if(this->HP < 0){
-        this->HP = 0;
+    if(healAmount > 0){
+        this->HP += healAmount;
+        if(this->HP > this->maxHP){
+            this->HP = this->maxHP;
+        }
     }
 }
 
-bool Player::isKnockedOut()
+void Player::damage(int damageAmount)
+{
+    if(damageAmount > 0){
+        this->HP -= damageAmount;
+        if(this->HP < 0){
+            this->HP = 0;
+        }
+    }
+}
+
+bool Player::isKnockedOut() const
 {
  return !this->HP;
 }
 
-void Player::addCoins(int amount)
+void Player::addCoins(int coinAmount)
 {
-    this->coins += amount;
+    if(coinAmount > 0){
+        this->coins += coinAmount;
+    }
 }
 
-bool Player::pay(int amount)
+bool Player::pay(int coinAmount)
 {
-    if(amount >= this->coins){
-        this->coins -= amount;
+    if(coinAmount >= this->coins){
+        this->coins -= coinAmount;
         return true;
     }
     else{
@@ -145,7 +133,7 @@ bool Player::pay(int amount)
     }
 }
 
-int Player::getAttackStrength()
+int Player::getAttackStrength() const
 {
     return this->force + this->level;
 }

@@ -18,6 +18,7 @@ int main(){
 
     Player p3 = Player("Elbaz");
 
+    p3.printInfo();
     p3 = p1;
 
     p3.levelUp();
