@@ -21,27 +21,27 @@ char* copyString(const char* originalString)
 
 Player::Player(const char* name, int baseMaxHP, int baseForce)
 {
-    this->name = copyString(name);
-    this->level = 1;
-    this->force = baseForce;
-    this->maxHP = baseMaxHP;
-    this->HP = baseMaxHP;
-    this->coins = 0;
+    this->m_name = copyString(name);
+    this->m_level = 1;
+    this->m_force = baseForce;
+    this->m_maxHP = baseMaxHP;
+    this->m_HP = baseMaxHP;
+    this->m_coins = 0;
 }
 
 Player::Player(const Player& player)
 {
-    this->name = copyString(player.name);
-    this->level = player.level;
-    this->force = player.force;
-    this->maxHP = player.maxHP;
-    this->HP = player.HP;
-    this->coins = player.coins;
+    this->m_name = copyString(player.m_name);
+    this->m_level = player.m_level;
+    this->m_force = player.m_force;
+    this->m_maxHP = player.m_maxHP;
+    this->m_HP = player.m_HP;
+    this->m_coins = player.m_coins;
 }
 
 Player::~Player()
 {
-    delete[] name;
+    delete[] m_name;
 }
 
 Player& Player::operator=(const Player& player)
@@ -50,13 +50,13 @@ Player& Player::operator=(const Player& player)
         return *this;
     }
 
-    delete[] this->name;
-    this->name = copyString(player.name);
-    this->level = player.level;
-    this->force = player.force;
-    this->maxHP = player.maxHP;
-    this->HP = player.HP;
-    this->coins = player.coins;
+    delete[] this->m_name;
+    this->m_name = copyString(player.m_name);
+    this->m_level = player.m_level;
+    this->m_force = player.m_force;
+    this->m_maxHP = player.m_maxHP;
+    this->m_HP = player.m_HP;
+    this->m_coins = player.m_coins;
 
     return *this;
 }
@@ -64,38 +64,38 @@ Player& Player::operator=(const Player& player)
 
 void Player::printInfo() const
 {
-    printPlayerInfo(this->name,
-                    this->level,
-                    this->force,
-                    this->HP,
-                    this->coins);
+    printPlayerInfo(this->m_name,
+                    this->m_level,
+                    this->m_force,
+                    this->m_HP,
+                    this->m_coins);
 }
 
 void Player::levelUp()
 {
-    if(level < 10){
-        level++;
+    if(m_level < 10){
+        m_level++;
     }
 }
 
 int Player::getLevel() const
 {
-    return level;
+    return m_level;
 }
 
 void Player::buff(int buffAmount)
 {
     if(buffAmount > 0){
-        this->force += buffAmount;
+        this->m_force += buffAmount;
     }
 }
 
 void Player::heal(int healAmount)
 {
     if(healAmount > 0){
-        this->HP += healAmount;
-        if(this->HP > this->maxHP){
-            this->HP = this->maxHP;
+        this->m_HP += healAmount;
+        if(this->m_HP > this->m_maxHP){
+            this->m_HP = this->m_maxHP;
         }
     }
 }
@@ -103,29 +103,29 @@ void Player::heal(int healAmount)
 void Player::damage(int damageAmount)
 {
     if(damageAmount > 0){
-        this->HP -= damageAmount;
-        if(this->HP < 0){
-            this->HP = 0;
+        this->m_HP -= damageAmount;
+        if(this->m_HP < 0){
+            this->m_HP = 0;
         }
     }
 }
 
 bool Player::isKnockedOut() const
 {
- return !this->HP;
+ return !this->m_HP;
 }
 
 void Player::addCoins(int coinAmount)
 {
     if(coinAmount > 0){
-        this->coins += coinAmount;
+        this->m_coins += coinAmount;
     }
 }
 
 bool Player::pay(int coinAmount)
 {
-    if(coinAmount >= this->coins){
-        this->coins -= coinAmount;
+    if(coinAmount <= this->m_coins){
+        this->m_coins -= coinAmount;
         return true;
     }
     else{
@@ -135,7 +135,7 @@ bool Player::pay(int coinAmount)
 
 int Player::getAttackStrength() const
 {
-    return this->force + this->level;
+    return this->m_force + this->m_level;
 }
 
 
